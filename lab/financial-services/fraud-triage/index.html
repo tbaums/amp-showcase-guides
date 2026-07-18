@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Build a Fraud-Triage AI Crew in AMP — and Watch It Think — Instructor Lab · CrewAI AMP Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="../../../assets/favicon.png">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../pygments.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a href="../../../"><img class="logo" src="../../../assets/crewai-logo-white.png" alt="CrewAI"></a>
+    <span class="badge"><span class="pill"></span><span class="label">AMP Showcase</span></span>
+  </div>
+</header>
+<div class="layout">
+<nav class="toc" aria-label="On this page">
+<p class="crumb"><a href="../../../">← All guides</a></p>
+<p class="toc-title">On this page</p>
+<ul><li><a href="#build-a-fraud-triage-ai-crew-in-amp-and-watch-it-think-instructor-lab">Build a Fraud-Triage AI Crew in AMP — and Watch It Think — Instructor Lab</a></li><li><a href="#step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)</a></li><li><a href="#step-2-steer-the-build-keep-it-self-contained">Step 2 — Steer the build (keep it self-contained)</a></li><li><a href="#step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears</a></li><li><a href="#step-4-run-it-on-your-transaction">Step 4 — Run it on your transaction</a></li><li><a href="#step-5-watch-it-think-the-trace">Step 5 — Watch it think (the trace)</a></li><li><a href="#step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service</a></li></ul>
+</nav>
+<main id="top">
+<p class="crumb"><a href="../../../">← All guides</a></p>
+<details class="toc-mobile"><summary>On this page</summary>
+<p class="toc-title">On this page</p>
+<ul><li><a href="#build-a-fraud-triage-ai-crew-in-amp-and-watch-it-think-instructor-lab">Build a Fraud-Triage AI Crew in AMP — and Watch It Think — Instructor Lab</a></li><li><a href="#step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)</a></li><li><a href="#step-2-steer-the-build-keep-it-self-contained">Step 2 — Steer the build (keep it self-contained)</a></li><li><a href="#step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears</a></li><li><a href="#step-4-run-it-on-your-transaction">Step 4 — Run it on your transaction</a></li><li><a href="#step-5-watch-it-think-the-trace">Step 5 — Watch it think (the trace)</a></li><li><a href="#step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service</a></li></ul>
+</details>
+<h1 id="build-a-fraud-triage-ai-crew-in-amp-and-watch-it-think-instructor-lab">Build a Fraud-Triage AI Crew in AMP — and Watch It Think — Instructor Lab<a class="headerlink" href="#build-a-fraud-triage-ai-crew-in-amp-and-watch-it-think-instructor-lab" title="Link to this section">¶</a></h1>
+<p><strong>Target time:</strong> 40 min · <strong>Steps:</strong> 6</p>
+<blockquote>
+<p>In ~30 minutes, from your browser and with no code, you build a two-agent fraud-triage crew, run it on a transaction you choose, watch both agents reason step-by-step in a live trace, and deploy it as a real service in your own workspace.</p>
+</blockquote>
+<h2 id="step-16-describe-what-you-want-crew-studio">Step 1/6: Describe what you want (Crew Studio)<a class="headerlink" href="#step-16-describe-what-you-want-crew-studio" title="Link to this section">¶</a></h2>
+<h1 id="step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)<a class="headerlink" href="#step-1-describe-what-you-want-crew-studio" title="Link to this section">¶</a></h1>
+<p>A fraud analyst's day is a firehose of flagged transactions. A model gives you a risk score —
+say <code>0.87</code> — but a score isn't a decision. Someone still has to weigh it against what actually
+happened, call it <em>fraud or not</em>, and write it up so the next person can act. That judgment
+work, at volume, is exactly what a crew of AI agents is good at — <em>if</em> you can trust it. Let's
+build that crew, no code.</p>
+<p>Open <strong>Crew Studio</strong> from the left rail (under <em>Build</em>). You'll land on <em>"What would you like to
+build today?"</em> with a <strong>Describe your automation</strong> box. Paste this in and hit the blue <strong>→</strong>
+(Build automation):</p>
+<blockquote>
+<p><em>Triage a suspicious financial transaction for fraud. Given a transaction record and its
+machine-learning risk score, first have a senior fraud analyst weigh the risk score against the
+transaction attributes (amount, merchant category, device, location, account balance, time of
+day) and return a FRAUD or APPROVED verdict with evidence-based reasoning. Then have a fraud QA
+specialist review that verdict, catch any missed red flags, and produce the final verdict plus a
+short case narrative for escalation.</em></p>
+<p>💡 <strong>What just happened.</strong> You didn't pick a template — you described the job in plain English.
+Studio reads that and proposes a <strong>crew</strong>: a team of AI agents, each with a role, that work in
+sequence. That's the core CrewAI idea, and you'll watch it take shape.</p>
+<p><strong>Instructor note:</strong> confirm the room hits this checkpoint before moving on — <em>Studio opens a project editor with a Studio Chat panel and a Canvas.</em> · <strong>Target time:</strong> ~7 min</p>
+</blockquote>
+<h2 id="step-26-answer-two-questions-keep-it-self-contained">Step 2/6: Answer two questions (keep it self-contained)<a class="headerlink" href="#step-26-answer-two-questions-keep-it-self-contained" title="Link to this section">¶</a></h2>
+<h1 id="step-2-steer-the-build-keep-it-self-contained">Step 2 — Steer the build (keep it self-contained)<a class="headerlink" href="#step-2-steer-the-build-keep-it-self-contained" title="Link to this section">¶</a></h1>
+<p>Studio now works out how to build your crew. <strong>It may do one of two things</strong> — either ask you a
+couple of clarifying questions first, or go straight to proposing a plan. Both are normal; don't
+worry about which you get.</p>
+<p><strong>If it asks questions,</strong> answer with the <strong>self-contained</strong> option each time so everything runs
+right here in your browser — nothing to connect:
+- When it asks where the transaction comes from → choose <strong>Plain text input (manually pasted)</strong>
+  (not Gmail/Zendesk).
+- When it asks where the output should go → choose <strong>Display in the crew output only</strong>
+  (not a Sheet or email).</p>
+<p><strong>If it goes straight to a plan,</strong> great — just read it and move to the next step.</p>
+<blockquote>
+<p>💡 <strong>Why this matters.</strong> Those self-contained choices are the difference between a demo that
+needs your company's Slack, inbox, and admin — and one that just <em>works</em> for you, right now.
+"Plain text in, result on screen" is the whole no-setup story. (Studio is an AI — it won't ask
+the exact same thing every time, so steer by that principle rather than by a fixed script.)</p>
+<p><strong>Instructor note:</strong> confirm the room hits this checkpoint before moving on — <em>Studio shows a plan and asks you to confirm it.</em> · <strong>Target time:</strong> ~7 min</p>
+</blockquote>
+<h2 id="step-36-confirm-the-plan-your-crew-appears">Step 3/6: Confirm the plan → your crew appears<a class="headerlink" href="#step-36-confirm-the-plan-your-crew-appears" title="Link to this section">¶</a></h2>
+<h1 id="step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears<a class="headerlink" href="#step-3-confirm-the-plan-your-crew-appears" title="Link to this section">¶</a></h1>
+<p>Read the plan Studio proposes — you'll recognize your two agents in it — then click <strong>Confirm
+plan</strong>. (Nothing is built until you confirm; if you tried to <em>Run</em> now you'd get "No tasks found.")</p>
+<p>Watch the Canvas build in front of you:</p>
+<ul>
+<li><strong>Senior Fraud Analyst</strong> — weighs the risk score against the transaction details and calls it
+  FRAUD or APPROVED, with reasoning.</li>
+<li><strong>a QA / quality-assurance agent</strong> — a <em>second</em> agent that reviews the first one's verdict,
+  checks for missed red flags, and writes the final case record. (Studio names it something like
+  <em>Fraud QA Specialist</em> or <em>Fraud Quality Assurance Specialist</em> — the exact wording varies.)</li>
+</ul>
+<p>They run <strong>sequentially</strong>: the analyst decides, then the QA agent double-checks. (A suggestion tip
+may appear in the chat panel — <strong>leave it open</strong>; it often holds the <strong>Run Automation</strong> button
+you'll use next, so dismissing it just hides that button.) Studio also picks a <strong>project name on its
+own</strong> (e.g.
+<em>FraudTriage-Crew</em>) — that varies run to run and doesn't matter; what matters is the two agents
+wired analyst → QA.</p>
+<blockquote>
+<p>💡 <strong>The idea worth keeping.</strong> You didn't ask for a checker — but good fraud process always has
+one. Notice AMP gave your crew a <strong>QA agent</strong> that audits the analyst before anything is final.
+That "second set of eyes" is why you can trust the output later.</p>
+<p><strong>Instructor note:</strong> confirm the room hits this checkpoint before moving on — <em>The Canvas shows two agents wired in order — a fraud analyst → a QA agent (Studio's auto-generated project name varies and doesn't matter).</em> · <strong>Target time:</strong> ~7 min</p>
+</blockquote>
+<h2 id="step-46-run-it-on-your-transaction">Step 4/6: Run it on your transaction<a class="headerlink" href="#step-46-run-it-on-your-transaction" title="Link to this section">¶</a></h2>
+<h1 id="step-4-run-it-on-your-transaction">Step 4 — Run it on your transaction<a class="headerlink" href="#step-4-run-it-on-your-transaction" title="Link to this section">¶</a></h1>
+<p>Start a run by clicking the blue <strong>Run</strong> button (top right) — that reliably opens the run form.
+<em>(You may also see a black </em><em>Run Automation</em><em> button inside the Studio Chat panel; it does the same
+thing. Don't switch to the "Run" tab expecting a button — it can just show a "waiting for events…"
+spinner.)</em> Because you chose plain-text input, there's nothing to connect — AMP gives you a simple
+form (titled <em>Run parameters</em>) with <strong>one box per input the plan generated</strong>; each box is labeled
+with the raw field name (e.g. <code>transaction_id</code>).</p>
+<blockquote>
+<p><strong>Your form may not match this list exactly.</strong> Studio designs the inputs from your description,
+so the exact field names/count can vary run to run. Don't worry — just fill <strong>each box you see</strong>
+with a sensible value. Use the suspicious transaction below as your guide; map each value to the
+closest field, and if your build has a field not listed here, make up a fictional value that fits.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>What it represents</th>
+<th>Example value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction id</td>
+<td><code>TXN-4471-0093</code></td>
+</tr>
+<tr>
+<td>amount</td>
+<td><code>4999.00</code></td>
+</tr>
+<tr>
+<td>merchant category</td>
+<td><code>Electronics</code></td>
+</tr>
+<tr>
+<td>merchant name</td>
+<td><code>QuikByte Wholesale (unrecognized merchant)</code></td>
+</tr>
+<tr>
+<td>device</td>
+<td><code>mobile (new device, first seen today)</code></td>
+</tr>
+<tr>
+<td>location</td>
+<td><code>Lagos, NG (IP region)</code></td>
+</tr>
+<tr>
+<td>account balance</td>
+<td><code>512.30</code></td>
+</tr>
+<tr>
+<td>time of day</td>
+<td><code>03:17 AM</code></td>
+</tr>
+<tr>
+<td>ML risk score</td>
+<td><code>0.87</code></td>
+</tr>
+<tr>
+<td>account history notes</td>
+<td><code>Account opened 6 days ago; no prior transaction above $200; billing address is US.</code></td>
+</tr>
+</tbody>
+</table>
+<p>Fill every box the form shows, then click <strong>Execute</strong>.</p>
+<blockquote>
+<p>💡 <strong>This is "your own data."</strong> Change the amount, drop the risk score to <code>0.15</code>, make the merchant
+a familiar one — and re-run. The crew reasons about <em>what you gave it</em>, not a canned script. Try
+to make it flip to APPROVED.</p>
+<p><strong>Instructor note:</strong> confirm the room hits this checkpoint before moving on — <em>The Run/execution view shows Execution started and a live Timeline.</em> · <strong>Target time:</strong> ~7 min</p>
+</blockquote>
+<h2 id="step-56-watch-it-think-the-trace">Step 5/6: Watch it think (the trace)<a class="headerlink" href="#step-56-watch-it-think-the-trace" title="Link to this section">¶</a></h2>
+<h1 id="step-5-watch-it-think-the-trace">Step 5 — Watch it think (the trace)<a class="headerlink" href="#step-5-watch-it-think-the-trace" title="Link to this section">¶</a></h1>
+<p>This is the part a slide deck can't fake. The <strong>Timeline</strong> shows each agent as it runs — each one
+makes an <strong>LLM call</strong> (the AI model doing the actual reasoning), and you can watch it happen:</p>
+<ul>
+<li><strong>Senior Fraud Analyst</strong> → <em>Analyze Transaction Risk</em>: Started → LLM call (~6s) → Completed</li>
+<li><strong>Fraud QA Specialist</strong> → <em>QA Review &amp; Final Verdict</em>: Started → LLM call (~4s) → Completed</li>
+</ul>
+<p>Click any step to open <strong>Event details</strong> (with a <strong>Raw Data</strong> tab) — the exact instruction the
+agent got and what it produced. Click the QA specialist's <strong>Completed</strong> step — then <strong>scroll past the Description (the agent's
+instructions) to the Output section below</strong>, which is the actual final
+result. On a real run of the transaction above it returned:</p>
+<blockquote>
+<p><strong>Final Verdict: FRAUD</strong> · <strong>Recommended Action: Block &amp; Investigate</strong>
+<strong>QA Findings</strong> — amount $4,999 far exceeds the $512.30 balance · new device first seen today ·
+unrecognized merchant · location (Lagos, NG) vs US billing · 03:17 AM unusual time. <em>Missed red
+flags: none. Overrides: none — the analyst aligns with the evidence.</em> Plus a plain-English case
+narrative for escalation.</p>
+<p>💡 <strong>Why this is the whole point.</strong> You can see <em>which</em> agent decided <em>what</em>, on <em>which</em> evidence,
+and how long it took. When your fraud-ops lead asks "why did it block this?", the answer isn't
+"the AI said so" — it's a trace you can open. That's the difference between a laptop script and a
+platform you'd put near production.</p>
+<p><strong>Instructor note:</strong> confirm the room hits this checkpoint before moving on — <em>You've read the final FRAUD verdict and seen both agents' steps in the trace.</em> · <strong>Target time:</strong> ~7 min</p>
+</blockquote>
+<h2 id="step-66-deploy-it-as-a-real-service">Step 6/6: Deploy it as a real service<a class="headerlink" href="#step-66-deploy-it-as-a-real-service" title="Link to this section">¶</a></h2>
+<h1 id="step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service<a class="headerlink" href="#step-6-deploy-it-as-a-real-service" title="Link to this section">¶</a></h1>
+<p>A crew that only runs in the editor is a prototype. Make it real: click <strong>Deploy</strong> (top right). In
+<strong>Ready to go live</strong>, keep the suggested name (whatever Studio generated, e.g. <em>…-v1</em>), optionally
+add a release note, and click <strong>Deploy</strong>.</p>
+<p>Go to <strong>Automations</strong> in the left rail — your crew is there, Source <strong>Studio</strong>. It first shows
+<em>Building Images for Crew…</em>, then goes <strong>Online</strong>, with its own <strong>endpoint</strong> (a web address other
+systems can call) and an access <strong>token</strong>. This can take a few minutes — if it looks stuck on <em>Building Images for Crew</em>, <strong>refresh the page</strong>
+and it'll flip to Online. <strong>Identify the one you just created</strong> (it's the newest
+entry — don't confuse it with an older, similarly-named crew someone made before). It now runs
+<strong>without your editor open</strong> — a service you (or a system you connect later) can call.</p>
+<blockquote>
+<p>💡 <strong>What you just crossed.</strong> From "I built something in a tool" to "I have a running service in
+my workspace." Same crew, now deployed — and everything you run against it shows up in the same
+kind of trace you just read.</p>
+</blockquote>
+<hr />
+<p><strong>What you did:</strong> in ~30 minutes, no code — you <em>described</em> a fraud-triage crew, <em>built</em> it
+(analyst + a QA checker), <em>ran</em> it on a transaction you chose, <em>read the trace</em> to see exactly how
+it decided, and <em>deployed</em> it as a live service in your own workspace. Every claim it made, you
+could verify.</p>
+<p><strong>Take it further:</strong> feed it a borderline case and watch the QA agent overturn the analyst · deploy
+a second version and compare · swap the scenario for your own domain (the same shape works for KYC
+review, claims triage, or pharmacovigilance intake).</p>
+<blockquote>
+<p><strong>Instructor note:</strong> confirm the room hits this checkpoint before moving on — <em>Your newly-deployed crew (the newest Studio-source entry) is listed under Automations and goes Online.</em> · <strong>Target time:</strong> ~7 min</p>
+</blockquote>
+<nav class="pagenav"><a class="pagenav-prev" href="../../cpg/complaint-triage/index.html"><span>← Previous</span><strong>Triage a Consumer Complaint with an AI Crew — and Catch the One That's a Recall — Instructor Lab</strong></a><a class="pagenav-next" href="../../insurance/claim-triage/index.html"><span>Next →</span><strong>Triage an Insurance Claim with an AI Crew — and Watch It Refuse to Guess — Instructor Lab</strong></a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="inner">
+    <img src="../../../assets/crewai-logo-dark.png" alt="CrewAI">
+    <span class="note">CrewAI AMP Showcase · built 2026-07-17 from <span class="sha">3441898</span></span>
+  </div>
+</footer>
+<a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
+<script>
+(function () {
+  var links = document.querySelectorAll('.toc a[href^="#"]');
+  if (!links.length) return;
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var headings = Array.from(document.querySelectorAll('main h2[id], main h3[id]'))
+    .filter(function (h) { return map[h.id]; });
+  var active = null;
+  function setActive(id) {
+    if (active === id) return;
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (map[id]) {
+      map[id].classList.add('active');
+      map[id].scrollIntoView({ block: 'nearest' });
+    }
+    active = id;
+  }
+  function onScroll() {
+    var line = window.scrollY + 120;
+    var current = headings[0] && headings[0].id;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].offsetTop <= line) current = headings[i].id;
+      else break;
+    }
+    if (current) setActive(current);
+    document.body.classList.toggle('scrolled', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Qualify an Inbound Lead with an AI Crew — Scored, Routed, and Honest About Guesses — Tutorial · CrewAI AMP Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="../../../assets/favicon.png">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../pygments.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a href="../../../"><img class="logo" src="../../../assets/crewai-logo-white.png" alt="CrewAI"></a>
+    <span class="badge"><span class="pill"></span><span class="label">AMP Showcase</span></span>
+  </div>
+</header>
+<div class="layout">
+<nav class="toc" aria-label="On this page">
+<p class="crumb"><a href="../../../">← All guides</a></p>
+<p class="toc-title">On this page</p>
+<ul><li><a href="#qualify-an-inbound-lead-with-an-ai-crew-scored-routed-and-honest-about-guesses-tutorial">Qualify an Inbound Lead with an AI Crew — Scored, Routed, and Honest About Guesses — Tutorial</a></li><li><a href="#step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)</a></li><li><a href="#step-2-steer-the-build-keep-it-self-contained-and-tool-free">Step 2 — Steer the build (keep it self-contained — and tool-free)</a></li><li><a href="#step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears</a></li><li><a href="#step-4-run-it-on-an-inbound-lead">Step 4 — Run it on an inbound lead</a></li><li><a href="#step-5-watch-it-think-scored-routed-and-honest-about-guesses">Step 5 — Watch it think — scored, routed, and honest about guesses</a></li><li><a href="#step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service</a></li></ul>
+</nav>
+<main id="top">
+<p class="crumb"><a href="../../../">← All guides</a></p>
+<details class="toc-mobile"><summary>On this page</summary>
+<p class="toc-title">On this page</p>
+<ul><li><a href="#qualify-an-inbound-lead-with-an-ai-crew-scored-routed-and-honest-about-guesses-tutorial">Qualify an Inbound Lead with an AI Crew — Scored, Routed, and Honest About Guesses — Tutorial</a></li><li><a href="#step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)</a></li><li><a href="#step-2-steer-the-build-keep-it-self-contained-and-tool-free">Step 2 — Steer the build (keep it self-contained — and tool-free)</a></li><li><a href="#step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears</a></li><li><a href="#step-4-run-it-on-an-inbound-lead">Step 4 — Run it on an inbound lead</a></li><li><a href="#step-5-watch-it-think-scored-routed-and-honest-about-guesses">Step 5 — Watch it think — scored, routed, and honest about guesses</a></li><li><a href="#step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service</a></li></ul>
+</details>
+<h1 id="qualify-an-inbound-lead-with-an-ai-crew-scored-routed-and-honest-about-guesses-tutorial">Qualify an Inbound Lead with an AI Crew — Scored, Routed, and Honest About Guesses — Tutorial<a class="headerlink" href="#qualify-an-inbound-lead-with-an-ai-crew-scored-routed-and-honest-about-guesses-tutorial" title="Link to this section">¶</a></h1>
+<blockquote>
+<p>In ~30 minutes, no code, you build a two-agent inbound-lead qualification crew, paste in a raw lead record, and watch it extract firmographics with per-field confidence, score ICP fit 0–100, and — the part that keeps your CRM clean — flag the fields it can't verify (and refuse to invent a website or a headcount) instead of guessing, then hand your rep a routing decision and a ready-to-use outreach angle, all in an auditable trace, deployed in your own workspace.</p>
+</blockquote>
+<h1 id="step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)<a class="headerlink" href="#step-1-describe-what-you-want-crew-studio" title="Link to this section">¶</a></h1>
+<p>A BDR's inbox is a firehose of inbound leads — contact-form submissions, enriched account notes,
+scribbled discovery-call notes. Each one has to be read, qualified, scored against your ideal
+customer profile (ICP), and either handed to an Account Executive, put on nurture, or dropped. The
+fastest way to poison a pipeline is a BDR who fills the blanks with guesses — a made-up headcount, an
+assumed website, an ICP score with nothing behind it. That judgment work, at volume and <em>honestly</em>,
+is exactly what a crew of AI agents is good at — <em>if</em> you can trust it. Let's build that crew, no code.</p>
+<p>Open <strong>Crew Studio</strong> from the left rail (under <em>Build</em>). You'll land on <em>"What would you like to
+build today?"</em> with a <strong>Describe your automation</strong> box. Paste this in and hit the blue <strong>→</strong>
+(Build automation):</p>
+<blockquote>
+<p><em>Qualify an inbound B2B sales lead. Given the pasted text of a lead or company record (a contact-form
+submission, an enriched account note, or notes from a discovery call), first have a BDR research analyst
+extract firmographics (company name, industry, employee count, region, website) and intent signals, and
+score ICP fit from 0 to 100, assigning a confidence level to each extracted field, never inventing
+firmographic facts the text does not support. Then have a sales-manager reviewer validate the ICP score,
+flag any weak or assumed signals and any disqualifiers, recommend the next action (route to an Account
+Executive / nurture / disqualify) with reasoning, and draft a short personalized outreach angle for the rep.</em></p>
+<p>💡 <strong>What just happened.</strong> You didn't pick a template — you described the job in plain English.
+Studio reads that and proposes a <strong>crew</strong>: a team of AI agents, each with a role, that work in
+sequence. That's the core CrewAI idea, and you'll watch it take shape.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> Studio opens a project editor with a Studio Chat panel and a Canvas.</p>
+<h1 id="step-2-steer-the-build-keep-it-self-contained-and-tool-free">Step 2 — Steer the build (keep it self-contained — and tool-free)<a class="headerlink" href="#step-2-steer-the-build-keep-it-self-contained-and-tool-free" title="Link to this section">¶</a></h1>
+<p>Studio now works out how to build your crew. <strong>It may do one of two things</strong> — either ask a couple of
+clarifying questions first, or go straight to proposing a plan.</p>
+<p><strong>If it asks questions,</strong> answer with the <strong>self-contained</strong> option each time:
+- Where the lead comes from → <strong>Plain text input (manually pasted)</strong> (not a CRM, form tool, or inbox).
+- Where the output should go → <strong>Display in the crew output only</strong> (not a Sheet, Slack, or CRM record).</p>
+<p><strong>Then read the plan carefully — one thing usually needs fixing here.</strong> Because this is a <em>sales research</em>
+job, Studio often tries to be helpful and attaches web-search / website-scraping tools to the analyst (you'll
+see something like <strong><code>ExaSearchTool</code></strong> and <strong><code>ScrapeWebsiteTool</code></strong> listed under its <em>Tools</em>). For a self-contained
+build that's exactly what you <em>don't</em> want — those tools need external API keys, and more importantly they let
+the agent go fetch data instead of being honest about what your lead record actually contains.</p>
+<p>So <strong>steer it back</strong>. Click <strong>Needs changes</strong> (below the plan) and send a message like:</p>
+<blockquote>
+<p><em>Remove ExaSearchTool and ScrapeWebsiteTool from the BDR Research Analyst so both agents have Tools: None.
+Reason only over the pasted lead_text — do not scrape or search any website. Mark any field not present in
+the text as Unverifiable / Low confidence.</em></p>
+</blockquote>
+<p>Studio will regenerate the plan. Confirm the analyst now shows <strong>Tools: None</strong> before you move on. (On our
+build it did exactly this on the first revision.)</p>
+<blockquote>
+<p>💡 <strong>Why this matters.</strong> This is the whole honesty story in miniature. A lead-qualifier that can secretly
+scrape the web will <em>always</em> find <em>something</em> to put in the box — and you'll never know which fields were in
+the lead and which the AI went and guessed. Force it to reason over what your form actually captured, and its
+"I can't verify this" becomes information you can trust.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> Studio shows a plan; you've steered it to no external tools (both agents Tools: None).</p>
+<h1 id="step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears<a class="headerlink" href="#step-3-confirm-the-plan-your-crew-appears" title="Link to this section">¶</a></h1>
+<p>Read the (revised) plan Studio proposes — you'll recognize your two agents, both now with <strong>Tools: None</strong>,
+plus a single input variable <code>{lead_text}</code> — then click <strong>Confirm plan</strong>. (Nothing is built until you
+confirm; if you tried to <em>Run</em> now you'd get "No tasks found.")</p>
+<p>Watch the Canvas build in front of you:</p>
+<ul>
+<li><strong>a BDR research analyst</strong> — reads the raw lead and extracts firmographics (company, industry, size,
+  region, website) and intent signals, puts a confidence level on each field, lists what's missing or
+  unverifiable, and scores <strong>ICP fit 0–100</strong> with a written rationale. (Studio names it something like
+  <em>BDR Research Analyst &amp; ICP Scoring Specialist</em> — the exact wording varies.)</li>
+<li><strong>a sales-manager reviewer</strong> — a <em>second</em> agent that QAs the analyst's score, flags weak or assumed
+  signals and any disqualifiers, makes the routing call (<strong>Route to AE / Nurture / Disqualify</strong>), and
+  drafts a personalized outreach angle. (Named something like <em>Senior Sales Manager &amp; Lead Routing Strategist</em>.)</li>
+</ul>
+<p>They run <strong>sequentially</strong>: the analyst scores, then the manager validates and routes. (A suggestion tip may
+appear in the chat panel — <strong>leave it open</strong>; it often holds a <strong>Run Automation</strong> button, so dismissing it
+just hides that button.) Studio also picks a <strong>project name on its own</strong> (e.g. <em>B2B Lead Qualifier</em>) — that
+varies run to run and doesn't matter; what matters is the two agents wired analyst → manager.</p>
+<blockquote>
+<p>💡 <strong>The idea worth keeping.</strong> You didn't ask for a second opinion — but good sales process always has one:
+the BDR who scores a lead isn't the one who decides an AE should spend an hour on it. Notice AMP gave your
+crew that same separation — a <strong>manager agent</strong> that reviews the score and can revise it before anything is
+routed. That's why you can trust the recommendation later.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> The Canvas shows two agents wired in order — a BDR research analyst → a sales-manager reviewer (Studio's auto-generated project name varies).</p>
+<h1 id="step-4-run-it-on-an-inbound-lead">Step 4 — Run it on an inbound lead<a class="headerlink" href="#step-4-run-it-on-an-inbound-lead" title="Link to this section">¶</a></h1>
+<p>Start a run by clicking the blue <strong>Run</strong> button (top right) — that reliably opens the run form.
+<em>(You may also see a </em><em>Run Automation</em><em> button inside the Studio Chat panel; it does the same thing.
+Don't switch to the "Run" tab expecting a button — it can just show a "waiting for events…" spinner.)</em>
+Because you chose plain-text input, there's nothing to connect — AMP gives you a simple form (titled
+<em>Run parameters</em>) with <strong>one box per input the plan generated</strong>; each box is labeled with the raw field
+name (on our build there was a single field, <code>lead_text</code>).</p>
+<p>Paste in the lead below. It's a deliberately <strong>realistic-but-messy</strong> inbound lead — real buying intent,
+but with the gaps a form and a quick call usually leave behind:</p>
+<blockquote>
+<p><em>INBOUND LEAD — website contact-form submission + BDR discovery-call notes</em></p>
+<p><em>Contact form: Name — Dana Rourke. Work email — dana.rourke@gmail.com (a personal Gmail, not a company
+domain). Company (free-text) — "Fjordline Outfitters". Message — "Our support team's phone setup keeps
+dropping calls during peak season and we're losing customers. We want to switch before the holiday rush.
+Needs to work across our regional stores."</em></p>
+<p><em>BDR notes (~6-min call): Dana described it as "outdoor-gear retail." Size felt mid-market — "a bunch of
+stores, maybe a few hundred people total? I'm honestly not sure of the exact count." Locations "across the
+Pacific Northwest, and opening in Colorado now" — no HQ address given. Couldn't confirm a company website —
+"marketing handles that, I don't have the URL handy." Strong urgency: wants a decision "in the next few
+weeks, definitely before Black Friday." Budget: not discussed. Authority: Dana said "I'm on the support
+team" — didn't confirm whether they own the buying decision. Offhand: "we trialed one of those VoIP
+startups but it didn't cover our in-store desk phones."</em></p>
+<p><strong>Your form may not match this exactly.</strong> Studio designs the inputs from your description, so the field
+name/count can vary run to run. If you see a single <code>lead_text</code> box, paste the whole lead in. If your build
+split it into several fields, map the lead across the boxes you see.</p>
+</blockquote>
+<p>Fill every box the form shows, then click <strong>Execute</strong>.</p>
+<blockquote>
+<p>💡 <strong>This is "your own data."</strong> Swap in a clean, strong-fit lead — a work email on a company domain, a
+confirmed headcount, a named VP of Support as the buyer — and re-run. Watch the ICP score climb and the
+routing flip toward <em>Route to AE</em>. The crew reasons about <em>what you gave it</em>, not a canned script.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> The Run/execution view shows Execution started and a live Timeline.</p>
+<h1 id="step-5-watch-it-think-scored-routed-and-honest-about-guesses">Step 5 — Watch it think — scored, routed, and honest about guesses<a class="headerlink" href="#step-5-watch-it-think-scored-routed-and-honest-about-guesses" title="Link to this section">¶</a></h1>
+<p>This is the part a slide deck can't fake. The <strong>Timeline</strong> shows each agent as it runs — each one makes an
+<strong>LLM call</strong> (the AI model doing the actual reasoning), and you can watch it happen:</p>
+<ul>
+<li><strong>BDR Research Analyst</strong> → <em>Extract Firmographics and Score ICP Fit</em>: Started → LLM call (~6s) → Completed</li>
+<li><strong>Sales Manager Reviewer</strong> → <em>Validate ICP Score and Recommend Next Action</em>: Started → LLM call (~5s) → Completed</li>
+</ul>
+<p>Click any step to open <strong>Event details</strong> (with a <strong>Raw Data</strong> tab) — the exact instruction the agent got and
+what it produced. Click the sales-manager's <strong>Completed</strong> step — then <strong>scroll past the Description (the
+agent's instructions) to the Output section below</strong>, which is the actual final result. On a real run of the
+Fjordline lead above it returned a <em>Sales Manager Review</em> with:</p>
+<blockquote>
+<p><strong>ICP Score: 70</strong> (validated, not changed) — "strong intent signals… offset by uncertainty on budget,
+decision-making authority, and unverifiable firmographics."</p>
+<p><strong>Flagged Weak Signals:</strong> Employee Count ("maybe a few hundred", Medium confidence); <strong>Company Website —
+Unverifiable / Low confidence</strong>; Authority in Purchasing Decision — unclear who can actually buy.</p>
+<p><strong>Flagged Disqualifiers: None</strong> — relevant segment (outdoor-gear retail), good ICP fit.</p>
+<p><strong>Recommended Next Action: <code>Nurture</code></strong> — strong intent and a real pain point, <em>but</em> budget and authority
+aren't confirmed, so nurture with proactive outreach before the Black Friday deadline rather than burning an
+AE slot yet. Plus a ready-to-use <strong>outreach angle</strong> referencing the exact pain, the deadline, and the prior
+VoIP trial.</p>
+</blockquote>
+<p>Look closely at that <strong>Company Website</strong> line. The lead never gave a URL — so the crew marked it
+<strong>Unverifiable</strong>. It did <em>not</em> quietly invent <code>fjordlineoutfitters.com</code> to fill the box.</p>
+<blockquote>
+<p>💡 <strong>Why this is the whole point.</strong> You can see <em>which</em> agent decided <em>what</em>, on <em>which</em> evidence, and how
+long it took — and you can see it <strong>flag what it couldn't verify rather than guess</strong>. When your sales lead
+asks "why is this a 70 and not a 90, and why nurture instead of AE?", the answer isn't "the AI said so" —
+it's a trace you can open, with the weak signals and the reasoning laid out. A BDR that tells you what it
+<em>doesn't</em> know is the one whose scores you can actually route on.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> You've read the ICP score, the routing recommendation, and seen an unverifiable field flagged rather than invented in the trace.</p>
+<h1 id="step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service<a class="headerlink" href="#step-6-deploy-it-as-a-real-service" title="Link to this section">¶</a></h1>
+<p>A crew that only runs in the editor is a prototype. Make it real: click <strong>Deploy</strong> (top right). In
+<strong>Ready to go live</strong>, keep the suggested name (whatever Studio generated, e.g. <em>B2B Lead Qualifier-v1</em>),
+optionally add a release note, and click <strong>Deploy</strong>.</p>
+<p>Go to <strong>Automations</strong> in the left rail — your crew is there, Source <strong>Studio</strong>. It first shows <em>Deploy
+Enqueued</em> / <em>Building Images for Crew…</em>, then goes <strong>Online</strong>, with its own <strong>endpoint</strong> (a web address
+other systems can call) and an access <strong>token</strong>. This can take a few minutes — if it looks stuck on
+<em>Building Images for Crew</em>, <strong>refresh the page</strong> and it'll flip to Online. <strong>Identify the one you just
+created</strong> (it's the newest entry — don't confuse it with an older, similarly-named crew someone made
+before). It now runs <strong>without your editor open</strong> — a service you (or the CRM/form tool you connect later)
+can call.</p>
+<blockquote>
+<p>💡 <strong>What you just crossed.</strong> From "I built something in a tool" to "I have a running service in my
+workspace." Same crew, now deployed — and every lead you run against it shows up in the same kind of trace
+you just read.</p>
+</blockquote>
+<hr />
+<p><strong>What you did:</strong> in ~30 minutes, no code — you <em>described</em> a lead-qualification crew, <em>steered</em> it to stay
+self-contained and honest (no scraping), <em>built</em> it (a research analyst + a sales-manager reviewer), <em>ran</em> it
+on a messy inbound lead you chose, <em>read the trace</em> to see exactly how it scored and routed — including
+watching it <strong>flag what it couldn't verify instead of inventing it</strong> — and <em>deployed</em> it as a live service in
+your own workspace. Every claim it made, you could check.</p>
+<p><strong>Take it further:</strong> feed it a clean, strong-fit lead and watch the ICP score climb and the routing flip to
+<em>Route to AE</em> · paste an obvious mismatch and watch it <em>Disqualify</em> with reasons · deploy a second version and
+compare · swap the scenario for your own domain (the same shape works for claims triage, fraud triage, or
+consumer-complaint triage).</p>
+<p><strong>✅ Checkpoint:</strong> Your newly-deployed crew (the newest Studio-source entry) is listed under Automations and goes Online.</p>
+<nav class="pagenav"><a class="pagenav-prev" href="../../pharma/pharmacovigilance-intake/index.html"><span>← Previous</span><strong>Triage a Drug-Safety Report with an AI Crew — and Trust What It Doesn't Know — Tutorial</strong></a><a class="pagenav-next" href="../../../lab/cpg/complaint-triage/index.html"><span>Next →</span><strong>Triage a Consumer Complaint with an AI Crew — and Catch the One That's a Recall — Instructor Lab</strong></a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="inner">
+    <img src="../../../assets/crewai-logo-dark.png" alt="CrewAI">
+    <span class="note">CrewAI AMP Showcase · built 2026-07-17 from <span class="sha">3441898</span></span>
+  </div>
+</footer>
+<a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
+<script>
+(function () {
+  var links = document.querySelectorAll('.toc a[href^="#"]');
+  if (!links.length) return;
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var headings = Array.from(document.querySelectorAll('main h2[id], main h3[id]'))
+    .filter(function (h) { return map[h.id]; });
+  var active = null;
+  function setActive(id) {
+    if (active === id) return;
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (map[id]) {
+      map[id].classList.add('active');
+      map[id].scrollIntoView({ block: 'nearest' });
+    }
+    active = id;
+  }
+  function onScroll() {
+    var line = window.scrollY + 120;
+    var current = headings[0] && headings[0].id;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].offsetTop <= line) current = headings[i].id;
+      else break;
+    }
+    if (current) setActive(current);
+    document.body.classList.toggle('scrolled', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

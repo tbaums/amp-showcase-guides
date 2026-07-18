@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Triage a Drug-Safety Report with an AI Crew — and Trust What It Doesn't Know — Tutorial · CrewAI AMP Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="../../../assets/favicon.png">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../pygments.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a href="../../../"><img class="logo" src="../../../assets/crewai-logo-white.png" alt="CrewAI"></a>
+    <span class="badge"><span class="pill"></span><span class="label">AMP Showcase</span></span>
+  </div>
+</header>
+<div class="layout">
+<nav class="toc" aria-label="On this page">
+<p class="crumb"><a href="../../../">← All guides</a></p>
+<p class="toc-title">On this page</p>
+<ul><li><a href="#triage-a-drug-safety-report-with-an-ai-crew-and-trust-what-it-doesnt-know-tutorial">Triage a Drug-Safety Report with an AI Crew — and Trust What It Doesn't Know — Tutorial</a></li><li><a href="#step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)</a></li><li><a href="#step-2-steer-the-build-keep-it-self-contained">Step 2 — Steer the build (keep it self-contained)</a></li><li><a href="#step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears</a></li><li><a href="#step-4-run-it-on-an-adverse-event-report">Step 4 — Run it on an adverse-event report</a></li><li><a href="#step-5-watch-it-think-and-flag-what-it-doesnt-know">Step 5 — Watch it think — and flag what it doesn't know</a></li><li><a href="#step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service</a></li></ul>
+</nav>
+<main id="top">
+<p class="crumb"><a href="../../../">← All guides</a></p>
+<details class="toc-mobile"><summary>On this page</summary>
+<p class="toc-title">On this page</p>
+<ul><li><a href="#triage-a-drug-safety-report-with-an-ai-crew-and-trust-what-it-doesnt-know-tutorial">Triage a Drug-Safety Report with an AI Crew — and Trust What It Doesn't Know — Tutorial</a></li><li><a href="#step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)</a></li><li><a href="#step-2-steer-the-build-keep-it-self-contained">Step 2 — Steer the build (keep it self-contained)</a></li><li><a href="#step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears</a></li><li><a href="#step-4-run-it-on-an-adverse-event-report">Step 4 — Run it on an adverse-event report</a></li><li><a href="#step-5-watch-it-think-and-flag-what-it-doesnt-know">Step 5 — Watch it think — and flag what it doesn't know</a></li><li><a href="#step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service</a></li></ul>
+</details>
+<h1 id="triage-a-drug-safety-report-with-an-ai-crew-and-trust-what-it-doesnt-know-tutorial">Triage a Drug-Safety Report with an AI Crew — and Trust What It Doesn't Know — Tutorial<a class="headerlink" href="#triage-a-drug-safety-report-with-an-ai-crew-and-trust-what-it-doesnt-know-tutorial" title="Link to this section">¶</a></h1>
+<blockquote>
+<p>In ~30 minutes, no code, you build a two-agent pharmacovigilance intake crew, run it on an adverse-event report you paste, and watch it extract a structured safety case, assess seriousness, and — the part that matters in a regulated domain — flag every field it isn't sure of instead of fabricating it, all in an auditable trace, deployed in your own workspace.</p>
+</blockquote>
+<h1 id="step-1-describe-what-you-want-crew-studio">Step 1 — Describe what you want (Crew Studio)<a class="headerlink" href="#step-1-describe-what-you-want-crew-studio" title="Link to this section">¶</a></h1>
+<p>A drug-safety team lives under a firehose of adverse-event reports — e-faxes, emails, literature.
+Each one has to be read, the case extracted, the seriousness assessed, and a narrative written for
+the safety database. It's meticulous, high-volume, and unforgiving: a fabricated or mis-coded value
+can harm a patient and trigger a regulatory finding. That combination — high volume <em>and</em> a hard
+accuracy bar — is exactly where a crew of AI agents helps, <strong>if</strong> it's honest about what it doesn't
+know. Let's build that crew, no code.</p>
+<p>Open <strong>Crew Studio</strong> (left rail, under <em>Build</em>), and in <strong>Describe your automation</strong> paste this,
+then hit the blue <strong>→</strong>:</p>
+<blockquote>
+<p><em>Process an adverse-event drug-safety report for pharmacovigilance intake. Given the pasted text
+of an adverse-event report, first have a case intake specialist extract a structured Individual
+Case Safety Report (reporter, patient, suspect drugs, adverse events and their seriousness, key
+dates) with an honest confidence score per field, never fabricating safety-critical values. Then
+have a medical safety reviewer assess seriousness and expectedness, flag missing or low-confidence
+critical fields, and draft a case narrative marking anything uncertain.</em></p>
+<p>💡 <strong>What just happened.</strong> You described the <em>job</em>, in plain English, and Studio will propose a
+<strong>crew</strong> — a team of agents that work in sequence. Notice you asked for two things that matter in
+a regulated domain: confidence scoring, and <em>never inventing</em> safety-critical values.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> Studio opens a project editor with a Studio Chat panel and a Canvas.</p>
+<h1 id="step-2-steer-the-build-keep-it-self-contained">Step 2 — Steer the build (keep it self-contained)<a class="headerlink" href="#step-2-steer-the-build-keep-it-self-contained" title="Link to this section">¶</a></h1>
+<p>Studio works out how to build the crew. <strong>It may ask you a clarifying question or two, or go
+straight to proposing a plan</strong> — both are normal.</p>
+<p><strong>If it asks</strong>, choose the self-contained options so everything runs in your browser with nothing to
+connect: <strong>Plain text input (manually pasted)</strong> for where the report comes from, and <strong>Display in
+the crew output only</strong> for the result.</p>
+<p><strong>If it goes straight to a plan</strong>, just read it and continue.</p>
+<blockquote>
+<p>💡 <strong>Why self-contained matters.</strong> Real PV intake wires up e-fax, email, and safety databases —
+but for learning, "paste the report text, read the result on screen" means you need no
+integrations, no admin, nothing but this browser. (Studio is an AI; it won't ask the same thing
+every time — steer by that principle, not a fixed script.)</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> Studio shows a plan (it may ask a question or two first, or go straight to it).</p>
+<h1 id="step-3-confirm-the-plan-your-crew-appears">Step 3 — Confirm the plan → your crew appears<a class="headerlink" href="#step-3-confirm-the-plan-your-crew-appears" title="Link to this section">¶</a></h1>
+<p>Read the plan — you'll see your two agents — then click <strong>Confirm plan</strong>. (Nothing is built until
+you confirm.) Watch the Canvas build:</p>
+<ul>
+<li><strong>a Case Intake Specialist</strong> — extracts the structured safety case (ICSR), scoring confidence per
+  field and leaving safety-critical values <em>null</em> rather than guessing.</li>
+<li><strong>a Medical Safety Reviewer</strong> — a <em>second</em> agent that assesses seriousness, flags the low-confidence
+  gaps, and drafts the narrative (marking uncertain items). (Studio names these something like
+  <em>Pharmacovigilance Case Intake Specialist</em> / <em>Senior Medical Safety Reviewer</em> — wording varies.)</li>
+</ul>
+<p>They run <strong>sequentially</strong>: intake extracts, then the reviewer double-checks and writes it up. (A
+suggestion tip may appear in the chat panel — <strong>leave it open</strong>; it often holds the <strong>Run
+Automation</strong> button you'll use next, so dismissing it just hides that button.) Studio also picks a
+<strong>project name on its own</strong> —
+that varies and doesn't matter; what matters is the two agents wired intake → reviewer.</p>
+<blockquote>
+<p>💡 <strong>The idea worth keeping.</strong> The reviewer is your <em>second set of eyes</em> — the same control a real
+PV process demands before a case is trusted.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> The Canvas shows two agents wired in order — a case intake specialist → a medical safety reviewer (Studio's auto-generated project name varies).</p>
+<h1 id="step-4-run-it-on-an-adverse-event-report">Step 4 — Run it on an adverse-event report<a class="headerlink" href="#step-4-run-it-on-an-adverse-event-report" title="Link to this section">¶</a></h1>
+<p>Start a run by clicking the blue <strong>Run</strong> button (top right) — that reliably opens the run form.
+<em>(You may also see a black </em><em>Run Automation</em><em> button inside the Studio Chat panel; it does the same
+thing. Don't switch to the "Run" tab expecting a button — it can just show a "waiting for events…"
+spinner.)</em> You'll get a form (titled <em>Run parameters</em>) with a box for the report text, labeled with
+the raw field name (e.g. <code>ae_report_text</code>).</p>
+<p>Paste a <strong>synthetic, fictional</strong> adverse-event report — use this one, or write your own with a few
+details deliberately missing:</p>
+<blockquote>
+<p><em>Spontaneous report received 2026-07-10 from a community pharmacist in Ohio, USA. Patient:
+68-year-old female. Suspect drug: Veltrimyxin 50 mg tablets, started around 2026-06-28 for
+hypertension, once daily. On 2026-07-08 she developed a widespread rash, facial swelling, and
+difficulty breathing; she went to the ED and was hospitalized overnight. Events: angioedema,
+dyspnea, urticaria. Outcome: recovering. Concomitant meds: "a water pill" (name not given). The
+pharmacist was unsure of the exact start date and didn't have the patient's weight. No prior
+allergy history stated.</em></p>
+</blockquote>
+<p>Click <strong>Execute</strong>.</p>
+<blockquote>
+<p>💡 <strong>The planted gaps are the point.</strong> Weight, the concomitant drug name, the exact date — all
+missing. Watch what the crew does with what it <em>doesn't</em> know.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> The Run/execution view shows Execution started and a live Timeline.</p>
+<h1 id="step-5-watch-it-think-and-flag-what-it-doesnt-know">Step 5 — Watch it think — and flag what it doesn't know<a class="headerlink" href="#step-5-watch-it-think-and-flag-what-it-doesnt-know" title="Link to this section">¶</a></h1>
+<p>The <strong>Timeline</strong> shows each agent run — the intake specialist, then the safety reviewer — each
+making an <strong>LLM call</strong> (the AI model reasoning) you can inspect. Click the reviewer's <strong>Completed</strong>
+step — then <strong>scroll past the Description (the instructions) to the Output section below</strong> to read
+the result. On a real run of the report above it returned:</p>
+<blockquote>
+<p><strong>Seriousness: SERIOUS</strong> (hospitalization criterion met — angioedema, dyspnea, urticaria).
+<strong>Expectedness: Unexpected</strong> — marked <code>[UNCERTAIN]</code> when labeling isn't available.
+<strong>Critical Field Flags:</strong> weight — <em>confidence 0, null → obtain</em>; medical history — <em>null</em>; route —
+<em>null</em> … each with a follow-up action. Then an ICH-E2E case narrative with every non-source detail
+marked <code>[UNCERTAIN]</code>, and a reportability note deferring the final call to a qualified person.</p>
+<p>💡 <strong>Why this is the whole point.</strong> It didn't guess the weight or invent a dose — it <strong>flagged what
+it doesn't know</strong> and told you what to follow up. Paste a sparser report and the flags <em>multiply</em>:
+the crew gets more honest, not more confident. That's the difference between an AI you can put near
+a regulated safety process and one you can't — and the trace is your audit trail.</p>
+</blockquote>
+<p><strong>✅ Checkpoint:</strong> You've read the seriousness call, the Critical Field Flags, and the [UNCERTAIN]-marked narrative in the trace.</p>
+<h1 id="step-6-deploy-it-as-a-real-service">Step 6 — Deploy it as a real service<a class="headerlink" href="#step-6-deploy-it-as-a-real-service" title="Link to this section">¶</a></h1>
+<p>Make it real: click <strong>Deploy</strong> (top right). In <strong>Ready to go live</strong>, keep the suggested name
+(whatever Studio generated), optionally add a release note, and click <strong>Deploy</strong>.</p>
+<p>Go to <strong>Automations</strong> (left rail) — your crew is there, Source <strong>Studio</strong>. It first shows <em>Building
+Images for Crew…</em>, then goes <strong>Online</strong>, with its own <strong>endpoint</strong> (a web address other systems can
+call) and an access <strong>token</strong>. This can take a few minutes — if it looks stuck on <em>Building Images for Crew</em>, <strong>refresh the page</strong>
+and it'll flip to Online. <strong>Identify the one you just created</strong> (the newest entry) — it now
+runs <strong>without your editor open</strong>, a service your safety team (or an intake pipeline) can call.</p>
+<blockquote>
+<p>💡 <strong>What you just crossed.</strong> From a prototype in a tool to a running, auditable safety-intake
+service in your own workspace — every run landing in the same kind of trace you just read.</p>
+</blockquote>
+<hr />
+<p><strong>What you did:</strong> in ~30 minutes, no code — you built a two-agent pharmacovigilance intake crew,
+ran it on a report you chose, watched it extract a structured case <em>and honestly flag the gaps</em>, and
+deployed it. <strong>Take it further:</strong> paste a messy real-world-shaped report and watch the confidence
+scores move · feed it a non-serious case and see the seriousness call flip · the same shape works
+for literature intake, complaint handling, or medical-information requests.</p>
+<p><strong>✅ Checkpoint:</strong> Your newly-deployed crew (the newest Studio-source entry) is listed under Automations and goes Online.</p>
+<nav class="pagenav"><a class="pagenav-prev" href="../../insurance/claim-triage/index.html"><span>← Previous</span><strong>Triage an Insurance Claim with an AI Crew — and Watch It Refuse to Guess — Tutorial</strong></a><a class="pagenav-next" href="../../sales/account-recommendation/index.html"><span>Next →</span><strong>Qualify an Inbound Lead with an AI Crew — Scored, Routed, and Honest About Guesses — Tutorial</strong></a></nav>
+</main>
+</div>
+<footer class="site-footer">
+  <div class="inner">
+    <img src="../../../assets/crewai-logo-dark.png" alt="CrewAI">
+    <span class="note">CrewAI AMP Showcase · built 2026-07-17 from <span class="sha">3441898</span></span>
+  </div>
+</footer>
+<a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
+<script>
+(function () {
+  var links = document.querySelectorAll('.toc a[href^="#"]');
+  if (!links.length) return;
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var headings = Array.from(document.querySelectorAll('main h2[id], main h3[id]'))
+    .filter(function (h) { return map[h.id]; });
+  var active = null;
+  function setActive(id) {
+    if (active === id) return;
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (map[id]) {
+      map[id].classList.add('active');
+      map[id].scrollIntoView({ block: 'nearest' });
+    }
+    active = id;
+  }
+  function onScroll() {
+    var line = window.scrollY + 120;
+    var current = headings[0] && headings[0].id;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].offsetTop <= line) current = headings[i].id;
+      else break;
+    }
+    if (current) setActive(current);
+    document.body.classList.toggle('scrolled', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
